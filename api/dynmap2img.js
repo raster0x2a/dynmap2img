@@ -84,13 +84,15 @@ async function combineJpgImages(inputDir, outputPath, n) {
     const imagesToComposite = [];
 
     for (let i = 0; i < n; i++) { // 行
-        for (let j = n - 1; 0 <= j; j--) { // 列
-            const index = i * n + j;
+        for (let j = 0; j < n; j++) { // 列
+            const ii = (n - j - 1);
+            const jj = i;
+            const index = ii * n + jj;
             if (files[index]) {
                 imagesToComposite.push({
                     input: files[index],
-                    left: j * imageWidth,
-                    top: i * imageHeight
+                    left: jj * imageWidth,
+                    top: ii * imageHeight
                 });
             }
         }
