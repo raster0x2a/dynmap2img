@@ -8,14 +8,6 @@ module.exports = (req, res) => {
   main(domain);
   const check = fs.existsSync(outputFileName);
   
-  fs.readdir('inputDirectory', function(err, files){
-  	if (err) throw err;
-  	var fileList = files.filter(function(file){
-  		return fs.statSync(file).isFile() && /.*\.csv$/.test(file); //絞り込み
-  	})
-  	console.log(fileList);
-  });
-  
   if (check) {
     // 適切なヘッダーを設定
     res.setHeader('Content-Type', 'image/jpeg');
@@ -185,6 +177,15 @@ function main(domain) {
         const centerX = -12;
         const centerY = 8;
         downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
+
+        fs.readdir('inputDirectory', function(err, files){
+          if (err) throw err;
+          var fileList = files.filter(function(file){
+            return fs.statSync(file).isFile() && /.*\.csv$/.test(file); //絞り込み
+          })
+          console.log(fileList);
+        });
+  
         combineJpgImages(inputDirectory, outputFileName, n);
     } catch (error) {
         console.error("処理中にエラーが発生しました:", error.message);
