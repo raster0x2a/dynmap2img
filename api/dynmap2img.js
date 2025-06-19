@@ -1,7 +1,7 @@
 module.exports = (req, res) => {
   const { domain } = req.query;
   main(domain);
-  const check = fs.existsSync('./output_image.jpg');
+  const check = fs.existsSync('/tmp/output_image.jpg');
   res.status(200).send(`domain: ${domain}, check: ${check}`)
 }
 
