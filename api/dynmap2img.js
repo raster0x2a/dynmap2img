@@ -173,6 +173,8 @@ function main(domain) {
     }
 
     try {
+        const centerX = -12;
+        const centerY = 8;
         downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
         combineJpgImages(inputDirectory, outputFileName, n);
     } catch (error) {
