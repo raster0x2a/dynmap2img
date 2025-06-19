@@ -1,6 +1,6 @@
 module.exports = (req, res) => {
   const { domain } = req.query;
-  main();
+  main(domain);
   const check = fs.existsSync('./output_image.jpg');
   res.status(200).send(`domain: ${domain}, check: ${check}`)
 }
@@ -152,7 +152,7 @@ function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
   
 }
 
-function main() {
+function main(domain) {
     const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
     const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
     const n = 5;
