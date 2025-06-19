@@ -15,7 +15,19 @@ module.exports = async (req, res) => {
       res.setHeader('Cache-Control', 'public, max-age=60'); // 1minキャッシュ
       
       // 画像ファイルを送信
-      res.sendFile(outputFileName);
+      // 画像ファイルを読み込む
+      fs.readFile(outputFileName, (err, data) => {
+        if (err) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'text/plain');
+          res.end('Error reading image file');
+          return;
+        }
+    
+        res.statusCode = 200;
+        // バイナリデータをレスポンスとして送信
+        res.end(data);
+      });
     } else {
       res.status(500).send(`画像の生成に失敗しました。domain: ${domain}`);
     }
