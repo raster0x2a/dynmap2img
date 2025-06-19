@@ -1,8 +1,22 @@
+const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
+const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
+const n = 5;
+
+
 module.exports = (req, res) => {
   const { domain } = req.query;
   main(domain);
-  const check = fs.existsSync('/tmp/output_image.jpg');
-  res.status(200).send(`domain: ${domain}, check: ${check}`)
+  const check = fs.existsSync(outputFileName);
+  if (check) {
+    // 適切なヘッダーを設定
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.setHeader('Cache-Control', 'public, max-age=3600'); // 1時間キャッシュ
+    
+    // 画像ファイルを送信
+    res.sendFile(outputFileName);
+  } else {
+    res.status(200).send(`domain: ${domain}, check: ${check}`);
+  }
 }
 
 // Generated with Gemini
@@ -153,10 +167,6 @@ function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
 }
 
 function main(domain) {
-    const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
-    const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
-    const n = 5;
-
     if (!fs.existsSync(inputDirectory)) {
         fs.mkdirSync(inputDirectory);
         console.log(`ディレクトリ ${inputDirectory} を作成しました。`);
