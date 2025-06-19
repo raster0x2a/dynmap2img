@@ -153,8 +153,8 @@ function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
 }
 
 function main() {
-    const inputDirectory = './input_images'; // 入力画像があるディレクトリ
-    const outputFileName = './output_image.jpg'; // 出力ファイル名
+    const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
+    const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
     const n = 5;
 
     if (!fs.existsSync(inputDirectory)) {
