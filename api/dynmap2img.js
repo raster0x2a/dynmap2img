@@ -83,7 +83,7 @@ async function combineJpgImages(inputDir, outputPath, n) {
     // 各画像を配置するための配列を作成
     const imagesToComposite = [];
 
-    for (let i = 0; i < n; i++) { // 行
+    for (let i = n; 0 < i; i--) { // 行
         for (let j = 0; j < n; j++) { // 列
             const index = i * n + j;
             if (files[index]) {
