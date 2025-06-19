@@ -7,6 +7,15 @@ module.exports = (req, res) => {
   const { domain } = req.query;
   main(domain);
   const check = fs.existsSync(outputFileName);
+  
+  fs.readdir('inputDirectory', function(err, files){
+  	if (err) throw err;
+  	var fileList = files.filter(function(file){
+  		return fs.statSync(file).isFile() && /.*\.csv$/.test(file); //絞り込み
+  	})
+  	console.log(fileList);
+  });
+  
   if (check) {
     // 適切なヘッダーを設定
     res.setHeader('Content-Type', 'image/jpeg');
