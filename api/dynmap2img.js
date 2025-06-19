@@ -1,7 +1,8 @@
 module.exports = (req, res) => {
   const { domain } = req.query;
-  const name = 'test';
-  res.status(200).send(`Hello ${name}!`)
+  main();
+  const check = fs.existsSync('./output_image.jpg');
+  res.status(200).send(`domain: ${domain}, check: ${check}`)
 }
 
 // Generated with Gemini
@@ -162,7 +163,7 @@ function main() {
     }
 
     try {
-        downloadFromDynmap((domain, n, centerX, centerY, inputDirectory)
+        downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
         combineJpgImages(inputDirectory, outputFileName, n);
     } catch (error) {
         console.error("処理中にエラーが発生しました:", error.message);
