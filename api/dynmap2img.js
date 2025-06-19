@@ -178,7 +178,7 @@ function main(domain) {
         const centerY = 8;
         downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
 
-        fs.readdir('inputDirectory', function(err, files){
+        fs.readdir(inputDirectory, function(err, files){
           if (err) throw err;
           var fileList = files.filter(function(file){
             return fs.statSync(file).isFile() && /.*\.csv$/.test(file); //絞り込み
