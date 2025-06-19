@@ -33,7 +33,7 @@ function combineJpgImages(inputDir, outputPath, n) {
 
     // 最初の画像のサイズを取得して、すべての画像が同じサイズであることを前提とします
     const firstImage = sharp(files[0]);
-    const metadata = await firstImage.metadata();
+    const metadata = firstImage.metadata();
     const imageWidth = metadata.width;
     const imageHeight = metadata.height;
 
@@ -63,7 +63,7 @@ function combineJpgImages(inputDir, outputPath, n) {
 
     // 画像を結合して保存
     try {
-        await sharp({
+        sharp({
             create: {
                 width: outputWidth,
                 height: outputHeight,
