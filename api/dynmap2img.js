@@ -140,6 +140,7 @@ function downloadImage(url, inputDir, filename, callback) {
 
 // 画像のダウンロード
 function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
+  console.log("downloadFromDynmap start")
   const timestamp = "1750309360440";
   const bottomRight = {
     x: centerX - 4 * Math.floor(n / 2),
@@ -150,6 +151,7 @@ function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
       const x = bottomRight.x + 4 * i;
       const y = bottomRight.y + 4 * j;
       const url = `https://${domain}/tiles/world/t/-1_0/zz_${x}_${y}.jpg?timestamp=${timestamp}`;
+      console.log(url)
       downloadImage(
         url,
         inputDir,
