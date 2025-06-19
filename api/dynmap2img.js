@@ -183,7 +183,7 @@ function main(domain) {
         fs.readdir(inputDirectory, function(err, files){
           if (err) throw err;
           var fileList = files.filter(function(file){
-            return fs.statSync(file).isFile() && /.*\.csv$/.test(file); //絞り込み
+            return fs.statSync(file).isFile() && /.*\.jpg$/.test(file); //絞り込み
           })
           console.log(fileList);
         });
