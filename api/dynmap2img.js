@@ -21,10 +21,10 @@ module.exports = async (req, res) => {
   center.x = x;
   center.y = y;
   mapType = mtype;
-  if (0 < n && n < 10 && n % 2 === 1) {
+  if (0 < n && n < 20 && n % 2 === 1) {
     tileNum = n;
   } else {
-    res.status(500).send(`エラーが発生しました: 0 < n < 10かつnは奇数である必要があります`);
+    res.status(500).send(`エラーが発生しました: 0 < n < 20かつnは奇数である必要があります`);
   }
 
   // domain check
