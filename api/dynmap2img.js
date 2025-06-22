@@ -13,13 +13,13 @@ const center = {};
 module.exports = async (req, res) => {
   const {
     domain,
-    mype = "t",
-    centerX = -12,
-    centerY = 8
+    mtype = "t",
+    x = -12,
+    y = 8
   } = req.query;
 
-  center.x = centerX;
-  center.y = centerY;
+  center.x = x;
+  center.y = y;
   mapType = mtype;
 
   // domain check
