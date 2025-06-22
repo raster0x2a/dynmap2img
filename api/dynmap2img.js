@@ -7,7 +7,6 @@ const crypto = require('crypto');
 
 const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
 const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
-const n = 5;
 const center = {};
 
 module.exports = async (req, res) => {
@@ -15,12 +14,18 @@ module.exports = async (req, res) => {
     domain,
     mtype = "t",
     x = -12,
-    y = 8
+    y = 8,
+    n = 5
   } = req.query;
 
   center.x = x;
   center.y = y;
   mapType = mtype;
+  if (1 < n && n < 10) {
+    n = n;
+  } else {
+    n = 5;
+  }
 
   // domain check
   const hash = crypto.createHash('sha256');
