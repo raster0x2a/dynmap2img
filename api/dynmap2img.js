@@ -13,13 +13,14 @@ const center = {};
 module.exports = async (req, res) => {
   const {
     domain,
-    mapType = "t",
+    mype = "t",
     centerX = -12,
     centerY = 8
   } = req.query;
 
   center.x = centerX;
   center.y = centerY;
+  mapType = mtype;
 
   // domain check
   const hash = crypto.createHash('sha256');
