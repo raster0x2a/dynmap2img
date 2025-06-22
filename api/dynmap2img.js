@@ -3,7 +3,7 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const crypt = require('crypt');
+const crypto = require('crypto');
 
 const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
 const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
