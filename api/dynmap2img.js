@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
 const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
 const n = 5;
+const center = {};
 
 module.exports = async (req, res) => {
   const {
@@ -16,6 +17,9 @@ module.exports = async (req, res) => {
     centerX = -12,
     centerY = 8
   } = req.query;
+
+  center.x = centerX;
+  center.y = centerY;
 
   // domain check
   const hash = crypto.createHash('sha256');
@@ -194,12 +198,12 @@ function downloadImage(url, inputDir, filename) {
 }
 
 // 画像のダウンロード（Promise版）
-async function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
+async function downloadFromDynmap(domain, n, inputDir) {
     console.log("downloadFromDynmap start");
     const timestamp = Date.now(); // 現在のタイムスタンプを使用
     const bottomRight = {
-        x: centerX - 4 * Math.floor(n / 2),
-        y: centerY - 4 * Math.floor(n / 2)
+        x: center.x - 4 * Math.floor(n / 2),
+        y: center.y - 4 * Math.floor(n / 2)
     };
     
     const downloadPromises = [];
@@ -265,7 +269,7 @@ async function main(domain) {
 
     try {        
         // 画像をダウンロード（完了まで待機）
-        const downloadedCount = await downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
+        const downloadedCount = await downloadFromDynmap(domain, n, inputDirectory);
         
         // ダウンロードされたファイルを確認
         const files = fs.readdirSync(inputDirectory)
