@@ -22,7 +22,7 @@ module.exports = async (req, res) => {
   center.y = y;
   mapType = mtype;
   if (0 < n && n < 10 && n % 2 === 1) {
-    n = n;
+    tileNum = n;
   } else {
     res.status(500).send(`エラーが発生しました: 0 < n < 10かつnは奇数である必要があります`);
   }
@@ -89,8 +89,8 @@ async function combineJpgImages(inputDir, outputPath, n) {
                     .map(file => path.join(inputDir, file))
                     .sort(); // ファイル名でソート
 
-    if (files.length !== n * n) {
-        throw new Error(`入力ディレクトリにはn^2 (${n * n}) 枚のJPG画像が必要です。現在 ${files.length} 枚の画像があります。`);
+    if (files.length !== tileNum * tileNum) {
+        throw new Error(`入力ディレクトリにはn^2 (${tileNum * tileNum}) 枚のJPG画像が必要です。現在 ${files.length} 枚の画像があります。`);
     }
 
     // 最初の画像のサイズを取得
@@ -110,11 +110,11 @@ async function combineJpgImages(inputDir, outputPath, n) {
     // 各画像を配置するための配列を作成
     const imagesToComposite = [];
 
-    for (let i = 0; i < n; i++) { // 行
-        for (let j = 0; j < n; j++) { // 列
-            const ii = (n - j - 1);
+    for (let i = 0; i < tileNum; i++) { // 行
+        for (let j = 0; j < tileNum; j++) { // 列
+            const ii = (tileNum - j - 1);
             const jj = i;
-            const index = i * n + j;
+            const index = i * tileNum + j;
             if (files[index]) {
                 imagesToComposite.push({
                     input: files[index],
@@ -204,18 +204,18 @@ function downloadImage(url, inputDir, filename) {
 }
 
 // 画像のダウンロード（Promise版）
-async function downloadFromDynmap(domain, n, inputDir) {
+async function downloadFromDynmap(domain, tileNum, inputDir) {
     console.log("downloadFromDynmap start");
     const timestamp = Date.now(); // 現在のタイムスタンプを使用
     const bottomRight = {
-        x: center.x - 4 * Math.floor(n / 2),
-        y: center.y - 4 * Math.floor(n / 2)
+        x: center.x - 4 * Math.floor(tileNum / 2),
+        y: center.y - 4 * Math.floor(tileNum / 2)
     };
     
     const downloadPromises = [];
     
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < n; j++) {
+    for (let i = 0; i < tileNum; i++) {
+        for (let j = 0; j < tileNum; j++) {
             const x = bottomRight.x + 4 * i;
             const y = bottomRight.y + 4 * j;
             const url = `https://${domain}/tiles/world/${mapType}/-1_0/zz_${x}_${y}.jpg?timestamp=${timestamp}`;
@@ -284,16 +284,16 @@ async function main(domain) {
         
         console.log(`ダウンロードされたファイル (${files.length}件):`, files);
         
-        if (files.length < n * n) {
-            console.warn(`警告: 必要な画像数 (${n * n}) に対して、${files.length}枚しかダウンロードされませんでした。`);
+        if (files.length < tileNum * tileNum) {
+            console.warn(`警告: 必要な画像数 (${tileNum * tileNum}) に対して、${files.length}枚しかダウンロードされませんでした。`);
         }
         
         // 画像を結合
-        if (files.length === n * n) {
-            await combineJpgImages(inputDirectory, outputFileName, n);
+        if (files.length === tileNum * tileNum) {
+            await combineJpgImages(inputDirectory, outputFileName, tileNum);
             console.log('処理が正常に完了しました。');
         } else {
-            throw new Error(`画像の結合には${n * n}枚の画像が必要ですが、${files.length}枚しかありません。`);
+            throw new Error(`画像の結合には${tileNum * tileNum}枚の画像が必要ですが、${files.length}枚しかありません。`);
         }
         
     } catch (error) {
