@@ -1,9 +1,30 @@
+// Generated with Gemini (Modified)
+const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const crypt = require('crypt');
+
 const inputDirectory = '/tmp/input_images'; // 入力画像があるディレクトリ
 const outputFileName = '/tmp/output_image.jpg'; // 出力ファイル名
 const n = 5;
 
 module.exports = async (req, res) => {
-  const { domain } = req.query;
+  const {
+    domain,
+    mapType = "t",
+    centerX = -12,
+    centerY = 8
+  } = req.query;
+
+  // domain check
+  const hash = crypto.createHash('sha256');
+  hash.update(domain + "YAvWpNC2uu6v");
+  const hashedData = hash.digest('hex');
+  if (hashedData !== "56b81cde3509066553280d13a68b1db83acf470f2dbeedec7aa7d516cd456dbd") {
+    console.log("Hash check failed");
+    res.status(500).send(`エラーが発生しました: Hash check failed`);
+  }
   
   try {
     await main(domain);
@@ -37,11 +58,7 @@ module.exports = async (req, res) => {
   }
 }
 
-// Generated with Gemini (Modified)
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
+
 
 /**
  * 指定されたディレクトリ内のn^2枚のJPG画像をタイル状に並べて1つのJPG画像に結合します。
@@ -191,7 +208,7 @@ async function downloadFromDynmap(domain, n, centerX, centerY, inputDir) {
         for (let j = 0; j < n; j++) {
             const x = bottomRight.x + 4 * i;
             const y = bottomRight.y + 4 * j;
-            const url = `https://${domain}/tiles/world/t/-1_0/zz_${x}_${y}.jpg?timestamp=${timestamp}`;
+            const url = `https://${domain}/tiles/world/${mapType}/-1_0/zz_${x}_${y}.jpg?timestamp=${timestamp}`;
             console.log(`ダウンロード予定: ${url}`);
             
             const downloadPromise = downloadImage(
@@ -246,10 +263,7 @@ async function main(domain) {
         console.log(`ディレクトリ ${inputDirectory} を作成しました。`);
     }
 
-    try {
-        const centerX = -12;
-        const centerY = 8;
-        
+    try {        
         // 画像をダウンロード（完了まで待機）
         const downloadedCount = await downloadFromDynmap(domain, n, centerX, centerY, inputDirectory);
         
