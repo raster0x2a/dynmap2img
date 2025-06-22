@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
  * @returns {Promise<void>} 結合処理が完了したときに解決されるPromise。
  */
 async function combineJpgImages(inputDir, outputPath, tileNum) {
-    if (n <= 0) {
+    if (tileNum <= 0) {
         throw new Error("nは正の整数である必要があります。");
     }
 
