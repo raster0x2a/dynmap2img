@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
  * @param {number} n - タイル状に並べる際のグリッドの辺の長さ（例: n=3の場合、3x3のグリッド）。
  * @returns {Promise<void>} 結合処理が完了したときに解決されるPromise。
  */
-async function combineJpgImages(inputDir, outputPath, n) {
+async function combineJpgImages(inputDir, outputPath, tileNum) {
     if (n <= 0) {
         throw new Error("nは正の整数である必要があります。");
     }
@@ -104,8 +104,8 @@ async function combineJpgImages(inputDir, outputPath, n) {
     }
 
     // 出力画像の全体の幅と高さを計算
-    const outputWidth = imageWidth * n;
-    const outputHeight = imageHeight * n;
+    const outputWidth = imageWidth * tileNum;
+    const outputHeight = imageHeight * tileNum;
 
     // 各画像を配置するための配列を作成
     const imagesToComposite = [];
@@ -275,7 +275,7 @@ async function main(domain) {
 
     try {        
         // 画像をダウンロード（完了まで待機）
-        const downloadedCount = await downloadFromDynmap(domain, n, inputDirectory);
+        const downloadedCount = await downloadFromDynmap(domain, tileNum, inputDirectory);
         
         // ダウンロードされたファイルを確認
         const files = fs.readdirSync(inputDirectory)
